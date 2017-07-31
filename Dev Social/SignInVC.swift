@@ -13,6 +13,10 @@ import Firebase
 
 class SignInVC: UIViewController {
     
+    @IBOutlet weak var emailField: CustomField!
+    @IBOutlet weak var passwordField: CustomField!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -23,7 +27,7 @@ class SignInVC: UIViewController {
         let fbLogin = FBSDKLoginManager()
         fbLogin.logIn(withReadPermissions: ["email"], from: self) { (result, error) in
             if error  != nil {
-                print("Unable to authenticate with Facebook. Error \(error)");
+                print("Unable to authenticate with Facebook. Error \(String(describing: error))");
             } else if result?.isCancelled == true {
                 print("Login cancelled");
             } else {
@@ -40,11 +44,34 @@ class SignInVC: UIViewController {
     func firebaseAuth(_ credential: AuthCredential) {
     Auth.auth().signIn(with: credential) { (user, error) in
         if error != nil {
-            print("Unable to authenticate with firebase. \(error)")
-        } else {
+            print("Unable to authenticate with firebase. \(String(describing: error))")
+            } else {
             print("Successfully authenticated with Firebase")
         }
         }
+    }
+    
+    @IBAction func signInTapped(_ sender: Any) {
+        
+        //makes more sense to try to and sign user in first
+        if let email = emailField.text, let password = passwordField.text {
+            Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
+                if error == nil {
+                    print("Email user authenticated with Firebase")
+                    print("Password email: \(user?.email)")
+                } else {
+                    Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
+                        if error != nil {
+                            print("Unable to authenticate with Firebase using email")
+                        } else {
+                            print("Successfully authenticated email with Firebase")
+                        }
+                    }
+                }
+            }
+
+        }
+    
     }
 
 }
