@@ -61,8 +61,28 @@ class SignInVC: UIViewController {
                     print("Password email: \(user?.email)")
                 } else {
                     Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-                        if error != nil {
+                        if let err  = error as? NSError {
                             print("Unable to authenticate with Firebase using email")
+                            if let errorCode = AuthErrorCode(rawValue: err.code) {
+                                switch errorCode {
+                                case .invalidEmail:
+                                    //handle invalid email
+                                    print("email invalid format")
+                                    self.emailField.text = "email invalid format"  //could make an error outlet instead
+                                    //but better to do this, or do the validation yourself with the text put in?
+                                case .wrongPassword:
+                                    //handle wrong password
+                                    print("wrong pw")
+                                case .emailAlreadyInUse:
+                                    //handle email already in use
+                                    print("email in use")
+                                case .weakPassword:
+                                    //handle weakpassword
+                                    print("need longer pw")
+                                default:
+                                    print(err)
+                                }
+                            }
                         } else {
                             print("Successfully authenticated email with Firebase")
                         }
