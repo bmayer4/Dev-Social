@@ -73,9 +73,6 @@ class SignInVC: UIViewController {
                                 case .wrongPassword:
                                     //handle wrong password
                                     print("wrong pw")
-                                case .emailAlreadyInUse:
-                                    //handle email already in use
-                                    print("email in use")
                                 case .weakPassword:
                                     //handle weakpassword
                                     print("need longer pw")
