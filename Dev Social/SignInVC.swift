@@ -10,6 +10,7 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import Firebase
+import SwiftKeychainWrapper
 
 class SignInVC: UIViewController {
     
@@ -21,7 +22,18 @@ class SignInVC: UIViewController {
         super.viewDidLoad()
         
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        //viewDidLoad can not perform segues, too early
+        if let _ = KeychainWrapper.standard.string(forKey: KEY_UID) {
+            print("Id found in keychain")
+            performSegue(withIdentifier: "goToFeed", sender: nil)
+        }
 
+    }
+    
     @IBAction func facebookBtnTapped(_ sender: Any) {
         
         let fbLogin = FBSDKLoginManager()
@@ -47,6 +59,10 @@ class SignInVC: UIViewController {
             print("Unable to authenticate with firebase. \(String(describing: error))")
             } else {
             print("Successfully authenticated with Firebase")
+            if let user = user {
+            self.completeSignIn(id: user.uid)
+            }
+           
         }
         }
     }
@@ -58,10 +74,13 @@ class SignInVC: UIViewController {
             Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
                 if error == nil {
                     print("Email user authenticated with Firebase")
-                    print("Password email: \(user?.email)")
+                    if let user = user {
+                        self.completeSignIn(id: user.uid)
+                    }
+
                 } else {
                     Auth.auth().createUser(withEmail: email, password: password) { (user, error) in
-                        if let err  = error as? NSError {
+                        if let err  = error as NSError? {
                             print("Unable to authenticate with Firebase using email")
                             if let errorCode = AuthErrorCode(rawValue: err.code) {
                                 switch errorCode {
@@ -69,7 +88,6 @@ class SignInVC: UIViewController {
                                     //handle invalid email
                                     print("email invalid format")
                                     self.emailField.text = "email invalid format"  //could make an error outlet instead
-                                    //but better to do this, or do the validation yourself with the text put in?
                                 case .wrongPassword:
                                     //handle wrong password
                                     print("wrong pw")
@@ -82,6 +100,10 @@ class SignInVC: UIViewController {
                             }
                         } else {
                             print("Successfully authenticated email with Firebase")
+                            if let user = user {
+                                self.completeSignIn(id: user.uid)
+                            }
+
                         }
                     }
                 }
@@ -89,6 +111,12 @@ class SignInVC: UIViewController {
 
         }
     
+    }
+    
+    func completeSignIn(id: String) {
+        let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
+        print("Data saved to keychain: \(keychainResult)")
+        performSegue(withIdentifier: "goToFeed", sender: nil)
     }
 
 }
