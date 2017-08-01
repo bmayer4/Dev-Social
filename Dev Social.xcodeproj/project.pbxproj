@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		753867D01F3005B4003A7BD7 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 753867CF1F3005B4003A7BD7 /* CircleView.swift */; };
 		7544AF4D1F2AC46900126FFF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544AF4C1F2AC46900126FFF /* AppDelegate.swift */; };
 		7544AF4F1F2AC46900126FFF /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544AF4E1F2AC46900126FFF /* SignInVC.swift */; };
 		7544AF521F2AC46900126FFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7544AF501F2AC46900126FFF /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		259902B843F8E41C3DCA2070 /* Pods_Dev_Social.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Dev_Social.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E61280C8D2E0DD8A0A61CF3 /* Pods-Dev Social.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dev Social.release.xcconfig"; path = "Pods/Target Support Files/Pods-Dev Social/Pods-Dev Social.release.xcconfig"; sourceTree = "<group>"; };
+		753867CF1F3005B4003A7BD7 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		7544AF491F2AC46900126FFF /* Dev Social.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Dev Social.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7544AF4C1F2AC46900126FFF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7544AF4E1F2AC46900126FFF /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				7544AF681F2EBE0500126FFF /* RoundButton.swift */,
 				7544AF6A1F2EC3A800126FFF /* CustomField.swift */,
 				7544AF6C1F2EC80800126FFF /* CustomButton.swift */,
+				753867CF1F3005B4003A7BD7 /* CircleView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -265,6 +268,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				753867D01F3005B4003A7BD7 /* CircleView.swift in Sources */,
 				7544AF641F2EB82700126FFF /* CustomView.swift in Sources */,
 				7544AF691F2EBE0500126FFF /* RoundButton.swift in Sources */,
 				7544AF4F1F2AC46900126FFF /* SignInVC.swift in Sources */,
