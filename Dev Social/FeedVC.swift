@@ -34,6 +34,8 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
 
+    
+    //make sure user interraction enabled is checked in storyboard for image this is linked to, with tap gesture rec
     @IBAction func signOutTapped(_ sender: Any) {
         
         let keychainResult = KeychainWrapper.standard.removeObject(forKey: KEY_UID)
