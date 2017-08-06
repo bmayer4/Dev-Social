@@ -23,6 +23,8 @@ class PostCell: UITableViewCell {
         
     }
     
+    
+    //we want to cache images that we bring down from firebase
     func configureCell(post: Post) {
         self.post = post
         caption.text = self.post.caption
