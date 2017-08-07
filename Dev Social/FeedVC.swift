@@ -17,6 +17,8 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     var posts = [Post]()
     var imagePicker: UIImagePickerController!
+    
+    static var imageCache = NSCache<NSString, UIImage>() 
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +39,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                     
                     if let postDic = snap.value as? Dictionary<String, Any> {
                         let key = snap.key
+                        print("SNAP KEY: \(snap.key)") //COOL, this is 'like' the id from firebase
                         let post = Post(postKey: key, postData: postDic)
                         self.posts.append(post)
                     }
@@ -59,9 +62,15 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         let p = posts[indexPath.row]
 
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as? PostCell {
-            cell.configureCell(post: p)
             
-            return cell
+            //check for cache image
+            if let img = FeedVC.imageCache.object(forKey: p.imageUrl as NSString) {
+                cell.configureCell(post: p, img: img)
+                return cell
+            } else {
+                cell.configureCell(post: p, img: nil)
+                return cell
+            }
         } else {
             return UITableViewCell()
         }

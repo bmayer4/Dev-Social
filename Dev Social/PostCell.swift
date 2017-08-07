@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class PostCell: UITableViewCell {
 
@@ -25,10 +26,30 @@ class PostCell: UITableViewCell {
     
     
     //we want to cache images that we bring down from firebase
-    func configureCell(post: Post) {
+    func configureCell(post: Post, img: UIImage?) {
         self.post = post
         caption.text = self.post.caption
         likesLbl.text = String(self.post.likes)
+        
+        if img != nil {  //if it exists in the cache
+            postImg.image = img
+        } else {   //we need to download it
+            let imageUrl = self.post.imageUrl
+                let ref = Storage.storage().reference(forURL: imageUrl)
+            ref.getData(maxSize: 2 * 1024 * 1024) { (data, error) in
+                if error != nil {
+                    print("Unable to download image from firebase storage")
+                } else {
+                    print("Image downloaded from firebase storage")
+                    if let imageData = data {
+                        if let img = UIImage(data: imageData) {
+                            self.postImg.image = img
+                            FeedVC.imageCache.setObject(img, forKey: imageUrl as NSString)
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
