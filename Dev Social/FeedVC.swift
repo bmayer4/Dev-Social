@@ -14,11 +14,14 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var imageAdd: CircleView!
+    @IBOutlet weak var captionField: CustomField!
     
     var posts = [Post]()
     var imagePicker: UIImagePickerController!
     
-    static var imageCache = NSCache<NSString, UIImage>() 
+    static var imageCache = NSCache<NSString, UIImage>()
+    
+    var imageSelected = false //so if you post a caption with no image, it doesn't upload camera image
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,10 +102,40 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         present(imagePicker, animated: true, completion: nil)
     }
    
+    @IBAction func postBtnTapped(_ sender: Any) {
+        guard let caption = captionField.text, caption != "" else {
+                print("Caption must be entered")
+                return
+        }
+        guard let img = imageAdd.image, imageSelected == true else {
+            print("An image must be selected")
+            return
+        }
+        
+        if let imgData = UIImageJPEGRepresentation(img, 0.2) {
+            
+            let imgUid = NSUUID().uuidString
+            let metadata = StorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            DataService.ds.REF_POST_IMAGES.child(imgUid).putData(imgData, metadata: metadata) {
+            (metadata, error) in
+                if error != nil {
+                    print("Unable to upload image to firebase storage")
+                } else {
+                    print("Successfully uploaded image to firebase storage")
+                    let downloadUrl = metadata?.downloadURL()?.absoluteString  //we will need this in nex video
+                    
+                }
+            }
+        }
+    }
+
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             imageAdd.image = image
+            imageSelected = true
         }
         dismiss(animated: true, completion: nil)
     }
