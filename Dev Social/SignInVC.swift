@@ -118,6 +118,7 @@ class SignInVC: UIViewController {
     
     func completeSignIn(id: String, userData: Dictionary<String, String>) {
         DataService.ds.createFirebaseDBUser(uid: id, userData: userData)
+        print("ID is \(id)")  //this id is in firebase under user id in database
         let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
         print("Data saved to keychain: \(keychainResult)")
         performSegue(withIdentifier: "goToFeed", sender: nil)

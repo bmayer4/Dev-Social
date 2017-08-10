@@ -34,7 +34,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         imagePicker.delegate = self
         
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
-            print("SNAP \(snapshot.value)")
+            print("SNAP \(String(describing: snapshot.value))")
             
             self.posts = []  //so no duplcate posts
      
@@ -44,7 +44,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                     
                     if let postDic = snap.value as? Dictionary<String, Any> {
                         let key = snap.key
-                        print("SNAP KEY: \(snap.key)") //COOL, this is 'like' the id from firebase
+                        print("SNAP KEY: \(snap.key)") //COOL, this is the post id from firebase database
                         let post = Post(postKey: key, postData: postDic)
                         self.posts.append(post)
                     }
@@ -71,11 +71,10 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             //check for cache image
             if let img = FeedVC.imageCache.object(forKey: p.imageUrl as NSString) {
                 cell.configureCell(post: p, img: img)
-                return cell
             } else {
                 cell.configureCell(post: p, img: nil)
-                return cell
             }
+             return cell
         } else {
             return UITableViewCell()
         }
