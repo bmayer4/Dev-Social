@@ -35,6 +35,8 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         
         DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
             print("SNAP \(snapshot.value)")
+            
+            self.posts = []  //so no duplcate posts
      
             if let snapshot = snapshot.children.allObjects as? [DataSnapshot] {
                 for snap in snapshot {
@@ -125,10 +127,33 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                 } else {
                     print("Successfully uploaded image to firebase storage")
                     let downloadUrl = metadata?.downloadURL()?.absoluteString  //we will need this in nex video
+                    print("DownloadUrl: /(downloadUrl)")
+                    
+                    if let url = downloadUrl {
+                        self.postToFirebase(imgUrl: url)
+                    }
                     
                 }
-            }
+            }  //end RED_POST_IMAGES
         }
+    }
+    
+    func postToFirebase(imgUrl: String) {
+        
+        let post: Dictionary<String, Any> = [
+        "caption": captionField.text! as Any,
+        "imageUrl": imgUrl as Any,
+        "likes": 0 as Any
+        ]
+        
+        let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
+        firebasePost.setValue(post)  //brand new post, ok to use setValue
+        
+        captionField.text = ""
+        imageSelected = false
+        imageAdd.image = UIImage(named: "add-image")
+        
+        tableView.reloadData()
     }
 
     
