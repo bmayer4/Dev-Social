@@ -21,7 +21,7 @@ class PostCell: UITableViewCell {
     var post: Post!
     var likesRef: DatabaseReference!
     var userRef: DatabaseReference!
-
+    var imageRef: DatabaseReference!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,6 +40,7 @@ class PostCell: UITableViewCell {
         self.post = post
         self.likesRef = DataService.ds.REF_USER_CURRENT.child("likes").child(post.postKey)
         self.userRef = DataService.ds.REF_USERS.child(self.post.userId).child("username")
+        self.imageRef = DataService.ds.REF_USERS.child(self.post.userId).child("imageUrl")
         
         caption.text = self.post.caption
         likesLbl.text = String(self.post.likes)
@@ -50,6 +51,36 @@ class PostCell: UITableViewCell {
                 print("no username")
             } else {
                 self.usernameLbl.text = snapshot.value as? String
+            }
+        })
+        
+        imageRef.observeSingleEvent(of: .value, with: { (snapshot) -> Void in
+            
+            if let _ = snapshot.value as? NSNull {
+                print("no imageUrl")
+            } else {
+               let imageUrl = snapshot.value as! String
+                
+                    if let img = FeedVC.imageCache.object(forKey: imageUrl as NSString) {
+                    self.profileImg.image = img
+                        print("Image retrieved from cache")
+                    } else {
+                
+                let ref = Storage.storage().reference(forURL: imageUrl)
+                ref.getData(maxSize: 2 * 1024 * 1024) { (data, error) in
+                    if error != nil {
+                        print("Unable to download image from firebase storage")
+                    } else {
+                        print("Image downloaded from firebase storage")
+                        if let imageData = data {
+                            if let img = UIImage(data: imageData) {
+                                self.profileImg.image = img
+                                FeedVC.imageCache.setObject(img, forKey: imageUrl as NSString)
+                            }
+                        }
+                    }
+                }
+              }
             }
         })
 

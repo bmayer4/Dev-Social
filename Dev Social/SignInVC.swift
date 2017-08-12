@@ -40,11 +40,19 @@ class SignInVC: UIViewController {
         //viewDidLoad can not perform segues, too early
         if let _ = KeychainWrapper.standard.string(forKey: KEY_UID) {
             print("Id found in keychain")
-            performSegue(withIdentifier: "goToFeed", sender: nil)
+            print("redirect from SigninVC worked!")
+            DataService.ds.REF_USER_CURRENT.child("username").observeSingleEvent(of: .value, with: { (snapshot) -> Void in
+                print("user snapshot: \(String(describing: snapshot.value))")
+                if let _ = snapshot.value as? NSNull {
+                    self.performSegue(withIdentifier: "goToProfile", sender: nil)
+                } else {
+                    self.performSegue(withIdentifier: "goToFeed", sender: nil)
+                }
+            })
         }
 
     }
-    
+
     @IBAction func facebookBtnTapped(_ sender: Any) {
         
         let fbLogin = FBSDKLoginManager()
@@ -63,6 +71,7 @@ class SignInVC: UIViewController {
         }
         
     }
+    
     
     func firebaseAuth(_ credential: AuthCredential) {
     Auth.auth().signIn(with: credential) { (user, error) in
@@ -132,7 +141,16 @@ class SignInVC: UIViewController {
         print("ID is \(id)")  //this id is in firebase under user id in database
         let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
         print("Data saved to keychain: \(keychainResult)")
-        performSegue(withIdentifier: "goToFeed", sender: nil)
+        
+        DataService.ds.REF_USER_CURRENT.child("username").observeSingleEvent(of: .value, with: { (snapshot) -> Void in
+            print("user snapshot: \(String(describing: snapshot.value))")
+            if let _ = snapshot.value as? NSNull {
+                self.performSegue(withIdentifier: "goToProfile", sender: nil)
+            } else {
+                self.performSegue(withIdentifier: "goToFeed", sender: nil)
+            }
+        })
+        
     }
     
     func completeSignInNewUser(id: String, userData: Dictionary<String, String>) {

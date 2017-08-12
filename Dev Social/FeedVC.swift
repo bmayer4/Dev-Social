@@ -102,6 +102,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     @IBAction func addImageTapped(_ sender: UIButton) {
         present(imagePicker, animated: true, completion: nil)
     }
+    
    
     @IBAction func postBtnTapped(_ sender: Any) {
         guard let caption = captionField.text, caption != "" else {
@@ -125,15 +126,15 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                     print("Unable to upload image to firebase storage")
                 } else {
                     print("Successfully uploaded image to firebase storage")
-                    let downloadUrl = metadata?.downloadURL()?.absoluteString  //we will need this in nex video
-                    print("DownloadUrl: /(downloadUrl)")
+                    let downloadUrl = metadata?.downloadURL()?.absoluteString
+                    print("DownloadUrl from FEEDVC: /(downloadUrl)")
                     
                     if let url = downloadUrl {
                         self.postToFirebase(imgUrl: url)
                     }
                     
                 }
-            }  //end RED_POST_IMAGES
+            }  //end REF_POST_IMAGES
         }
     }
     
@@ -143,7 +144,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         "caption": captionField.text! as Any,
         "imageUrl": imgUrl as Any,
         "likes": 0 as Any,
-        "userId": KeychainWrapper.standard.string(forKey: KEY_UID)  //stores id of user who made post
+        "userId": KeychainWrapper.standard.string(forKey: KEY_UID) as Any  //stores id of user who made post
         ]
         
         let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
@@ -165,6 +166,6 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         dismiss(animated: true, completion: nil)
     }
 
-
-
+    
+    
 }
