@@ -20,6 +20,7 @@ class PostCell: UITableViewCell {
     
     var post: Post!
     var likesRef: DatabaseReference!
+    var userRef: DatabaseReference!
 
     
     override func awakeFromNib() {
@@ -38,9 +39,21 @@ class PostCell: UITableViewCell {
     func configureCell(post: Post, img: UIImage?) {
         self.post = post
         self.likesRef = DataService.ds.REF_USER_CURRENT.child("likes").child(post.postKey)
+        self.userRef = DataService.ds.REF_USERS.child(self.post.userId).child("username")
         
         caption.text = self.post.caption
         likesLbl.text = String(self.post.likes)
+        
+        userRef.observeSingleEvent(of: .value, with: { (snapshot) -> Void in
+            print("userRef snapshot: \(String(describing: snapshot.value))")
+            if let _ = snapshot.value as? NSNull {
+                print("no username")
+            } else {
+                self.usernameLbl.text = snapshot.value as? String
+            }
+        })
+
+        
         
         if img != nil {  //if it exists in the cache
             postImg.image = img
@@ -63,7 +76,7 @@ class PostCell: UITableViewCell {
         }
         
             likesRef.observeSingleEvent(of: .value, with: { (snapshot) -> Void in
-            print("likesref snapshot: \(String(describing: snapshot.value))")
+            print("likesRef snapshot: \(String(describing: snapshot.value))")
             if let _ = snapshot.value as? NSNull {  //if no likes then firebase will return NSNull, not nil
                 self.likeImg.image = UIImage(named: "empty-heart")
             } else {

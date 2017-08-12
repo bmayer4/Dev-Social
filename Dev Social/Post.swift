@@ -16,6 +16,7 @@ class Post {
     private var _likes: Int!
     private var _postKey: String!  //could have called this id
     private var _postRef: DatabaseReference!
+    private var _userId: String!
     
     
     var caption: String {
@@ -32,6 +33,10 @@ class Post {
     
     var postKey: String {
         return _postKey
+    }
+    
+    var userId: String {
+        return _userId
     }
     
     init(caption: String, imageUrl: String, likes: Int) {
@@ -53,6 +58,10 @@ class Post {
         
         if let likes = postData["likes"] as? Int {
             self._likes = likes
+        }
+        
+        if let userId = postData["userId"] as? String {
+            self._userId = userId
         }
         
         _postRef = DataService.ds.REF_POSTS.child(_postKey)

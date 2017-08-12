@@ -142,7 +142,8 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         let post: Dictionary<String, Any> = [
         "caption": captionField.text! as Any,
         "imageUrl": imgUrl as Any,
-        "likes": 0 as Any
+        "likes": 0 as Any,
+        "userId": KeychainWrapper.standard.string(forKey: KEY_UID)  //stores id of user who made post
         ]
         
         let firebasePost = DataService.ds.REF_POSTS.childByAutoId()

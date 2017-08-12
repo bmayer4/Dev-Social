@@ -12,6 +12,17 @@ import FBSDKLoginKit
 import Firebase
 import SwiftKeychainWrapper
 
+//For exercise
+//1. Allow a new user to set their username, should store as child under users  DONE
+//2. profile images, for 1 and 2 have a profile page that allows them to change these (new users will get take to page, but
+//exsting users can click on the profile page
+//3. big one, edit and delete posts. tip: get it to where you can edit/delete all posts, then lock it down to just yours
+//look in firebase security rules documentation
+//4. comments on posts
+//5. change up ui
+//***you are job ready if you can do all this
+
+
 class SignInVC: UIViewController {
     
     @IBOutlet weak var emailField: CustomField!
@@ -104,11 +115,11 @@ class SignInVC: UIViewController {
                             print("Successfully authenticated email with Firebase")
                             if let user = user {
                                 let userData = ["provider": user.providerID]
-                                self.completeSignIn(id: user.uid, userData: userData)
+                                self.completeSignInNewUser(id: user.uid, userData: userData)
                             }
 
                         }
-                    }
+                    }  //end createUser
                 }
             }
 
@@ -123,6 +134,15 @@ class SignInVC: UIViewController {
         print("Data saved to keychain: \(keychainResult)")
         performSegue(withIdentifier: "goToFeed", sender: nil)
     }
+    
+    func completeSignInNewUser(id: String, userData: Dictionary<String, String>) {
+        DataService.ds.createFirebaseDBUser(uid: id, userData: userData)
+        print("ID is \(id)")  //this id is in firebase under user id in database
+        let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
+        print("Data saved to keychain: \(keychainResult)")
+        performSegue(withIdentifier: "goToProfile", sender: nil)
+    }
+
 
 }
 
