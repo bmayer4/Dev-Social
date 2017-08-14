@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SwiftKeychainWrapper
 
 class PostCell: UITableViewCell {
 
@@ -17,6 +18,7 @@ class PostCell: UITableViewCell {
     @IBOutlet weak var caption: UITextView!
     @IBOutlet weak var likesLbl: UILabel!
     @IBOutlet weak var likeImg: UIImageView!
+    @IBOutlet weak var editButton: UIButton!
     
     var post: Post!
     var likesRef: DatabaseReference!
@@ -32,11 +34,22 @@ class PostCell: UITableViewCell {
         likeImg.addGestureRecognizer(tap)
         likeImg.isUserInteractionEnabled = true //IMPORTANT
         
+        editButton.isHidden = true
+        
     }
     
     
     //we want to cache images that we bring down from firebase
     func configureCell(post: Post, img: UIImage?) {
+        
+        let uid = KeychainWrapper.standard.string(forKey: KEY_UID)
+        if post.userId == uid {
+            editButton.isHidden = false
+            print("is user")
+        } else {
+            print("not user")
+            editButton.isHidden = true
+        }
         self.post = post
         self.likesRef = DataService.ds.REF_USER_CURRENT.child("likes").child(post.postKey)
         self.userRef = DataService.ds.REF_USERS.child(self.post.userId).child("username")
@@ -107,7 +120,6 @@ class PostCell: UITableViewCell {
         }
         
             likesRef.observeSingleEvent(of: .value, with: { (snapshot) -> Void in
-            print("likesRef snapshot: \(String(describing: snapshot.value))")
             if let _ = snapshot.value as? NSNull {  //if no likes then firebase will return NSNull, not nil
                 self.likeImg.image = UIImage(named: "empty-heart")
             } else {

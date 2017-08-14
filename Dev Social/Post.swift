@@ -75,4 +75,16 @@ class Post {
         }
         _postRef.child("likes").setValue(_likes)
     }
+    
+    func deletePost() {
+        DataService.ds.REF_POSTS.child(self.postKey).removeValue()
+        print("post with key of \(self.postKey) deleted")
+        
+        Storage.storage().reference(forURL: self._imageUrl).delete { (error) in
+            print("deleted image reference from storage")
+        }
+        
+        FeedVC.imageCache.removeObject(forKey: self.imageUrl as NSString)
+
+    }
 }

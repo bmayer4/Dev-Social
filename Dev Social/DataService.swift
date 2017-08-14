@@ -17,20 +17,17 @@ let STORAGE_BASE  = Storage.storage().reference()
 class DataService {
     
     static let ds = DataService() //singleton
+    private init() {}
     
     //these will all be global since it is singletion class
     //DB references
-    private var _REF_BASE = DB_BASE
     private var _REF_POSTS = DB_BASE.child("posts")
     private var _REF_USERS = DB_BASE.child("users")
     
     //storage references
     private var _REF_POST_IMAGES = STORAGE_BASE.child("post-pics")
     private var _REF_PROFILE_IMAGES = STORAGE_BASE.child("profile-pics")
-    
-    var REF_BASE: DatabaseReference {
-        return _REF_BASE
-    }
+
     
     var REF_POSTS: DatabaseReference {
         return _REF_POSTS

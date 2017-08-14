@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import SwiftKeychainWrapper
+
 //when this loads users profile image needs to pop up for editing purposes
 class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -16,6 +17,7 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
     @IBOutlet weak var imageAdd: CircleView!
     
     var imagePicker: UIImagePickerController!
+    var imageUrlToRemove: String?
 
     
     override func viewDidLoad() {
@@ -42,9 +44,22 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
             return
         }
         
+        //remove original image!
+        let ref = Storage.storage().reference(forURL: imageUrlToRemove!)
+        ref.delete() { (error) in
+            if error != nil {
+                print("Could not remove image from storage")
+            } else {
+                print("Removed image \(self.imageUrlToRemove!) from storage")
+                FeedVC.imageCache.removeObject(forKey: self.imageUrlToRemove! as NSString)
+
+            }
+        }
+    
+        
         if let imgData = UIImageJPEGRepresentation(img, 0.2) {
             
-            let imgUid = NSUUID().uuidString
+            let imgUid = NSUUID().uuidString   
             let metadata = StorageMetadata()
             metadata.contentType = "image/jpeg"
             
@@ -57,14 +72,21 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
 
                     let userData: Dictionary<String, Any> = ["username": username, "imageUrl": downloadUrl as Any]
                     DataService.ds.REF_USER_CURRENT.updateChildValues(userData)
-                    print("Successfully created username")
+                    print("Successfully created username and set profile image :)")
 
                     }
             }
             
         }
         
-        performSegue(withIdentifier: "goToFeed", sender: nil)
+        if presentingViewController is SignInVC {
+            performSegue(withIdentifier: "goToFeed", sender: nil)
+            print("going into feed for first time")
+        }
+        else {
+            print("going into feed from feed via dismiss")
+            dismiss(animated: true, completion: nil)
+        }
         
     }
     
@@ -110,8 +132,8 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
                 print("no imageUrl")
             } else {
                 let imageUrl = snapshot.value as! String
-                
-                if let img = FeedVC.imageCache.object(forKey: imageUrl as NSString) {
+                self.imageUrlToRemove = imageUrl
+                    if let img = FeedVC.imageCache.object(forKey: imageUrl as NSString) {
                     self.imageAdd.image = img
                     print("got image from cache!")
                 } else {

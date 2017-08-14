@@ -25,7 +25,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    
        tableView.delegate = self
        tableView.dataSource = self
         
@@ -63,7 +63,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+    
         let p = posts[indexPath.row]
 
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PostCell", for: indexPath) as? PostCell {
@@ -79,6 +79,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             return UITableViewCell()
         }
     }
+
     
 
     
@@ -148,6 +149,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         ]
         
         let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
+        print("firebase post: \(firebasePost.key)")  //Post Id, I could add this to the user table..
         firebasePost.setValue(post)  //brand new post, ok to use setValue
         
         captionField.text = ""
@@ -165,7 +167,56 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         }
         dismiss(animated: true, completion: nil)
     }
-
     
+
+    @IBAction func menuTapped(_ sender: Any) {
+        print("Menu tapped")
+        
+        let buttonPosition: CGPoint = (sender as! UIButton).convert(CGPoint.zero, to:self.tableView)
+        let indexPath = self.tableView.indexPathForRow(at: buttonPosition)
+        let post = posts[indexPath!.row]
+        
+        let ac = UIAlertController(title: "Choose one", message: nil, preferredStyle: .alert)
+        
+        let editAction = UIAlertAction(title: "Edit", style: .default) { (action) in
+            
+            //here is how to do it with code :)
+            //let vc = self.storyboard?.instantiateViewController(withIdentifier: "PostInfoVC") as? PostInfoVC
+            //self.present(vc!, animated: true, completion: nil)
+            
+            self.performSegue(withIdentifier: "goToPostInfoVC", sender: post)
+            
+            
+        
+            
+        }
+        ac.addAction(editAction)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .default) { (action) -> Void in
+            
+            post.deletePost()
+        }
+        ac.addAction(deleteAction)
+
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        ac.addAction(cancelAction)
+        
+        present(ac, animated: true, completion: nil)
+
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("prepare worked")
+        if segue.identifier == "goToPostInfoVC" {
+            if let navController = segue.destination as? UINavigationController {
+                let destination = navController.topViewController as! PostInfoVC
+                if let post = sender as? Post {
+                    destination.post = post
+                }
+            }
+        }
+    }
+
     
 }
