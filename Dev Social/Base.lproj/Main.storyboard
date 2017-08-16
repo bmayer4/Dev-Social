@@ -187,7 +187,7 @@
                                     <action selector="submitProfile:" destination="W6p-2s-EJn" eventType="touchUpInside" id="WO0-Pm-y2y"/>
                                 </connections>
                             </button>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="devslopes-logo" translatesAutoresizingMaskIntoConstraints="NO" id="NEJ-Kd-1xi" customClass="CircleView" customModule="Dev_Social" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="devslopes-logo" translatesAutoresizingMaskIntoConstraints="NO" id="NEJ-Kd-1xi" customClass="CircleView" customModule="Dev_Social" customModuleProvider="target">
                                 <rect key="frame" x="142" y="80" width="90" height="90"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -673,8 +673,8 @@
         <image name="sign-out" width="92" height="65"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="40z-fs-Tfc"/>
         <segue reference="CQS-J5-V8n"/>
         <segue reference="bzf-GS-aTf"/>
+        <segue reference="W6X-Tg-jB4"/>
     </inferredMetricsTieBreakers>
 </document>
