@@ -126,7 +126,7 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
     }
     
     func getProfileImage() {
-    
+
         DataService.ds.REF_USER_CURRENT.child("imageUrl").observeSingleEvent(of: .value, with: { (snapshot) -> Void in
             if let _ = snapshot.value as? NSNull {
                 print("no imageUrl")

@@ -25,6 +25,7 @@
 		7544AF6B1F2EC3A800126FFF /* CustomField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544AF6A1F2EC3A800126FFF /* CustomField.swift */; };
 		7544AF6D1F2EC80800126FFF /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544AF6C1F2EC80800126FFF /* CustomButton.swift */; };
 		7544AF6F1F2F931E00126FFF /* FeedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7544AF6E1F2F931E00126FFF /* FeedVC.swift */; };
+		7585AE211F425D4D00B7E66F /* ProfilePageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7585AE201F425D4D00B7E66F /* ProfilePageVC.swift */; };
 		F210A6F42368E568380E1958 /* Pods_Dev_Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 259902B843F8E41C3DCA2070 /* Pods_Dev_Social.framework */; };
 /* End PBXBuildFile section */
 
@@ -51,6 +52,7 @@
 		7544AF6A1F2EC3A800126FFF /* CustomField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomField.swift; sourceTree = "<group>"; };
 		7544AF6C1F2EC80800126FFF /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		7544AF6E1F2F931E00126FFF /* FeedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedVC.swift; sourceTree = "<group>"; };
+		7585AE201F425D4D00B7E66F /* ProfilePageVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePageVC.swift; sourceTree = "<group>"; };
 		CCDB7880CEB1BD2C8110A822 /* Pods-Dev Social.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dev Social.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Dev Social/Pods-Dev Social.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -147,6 +149,7 @@
 				7544AF6E1F2F931E00126FFF /* FeedVC.swift */,
 				753867D81F3D69E1003A7BD7 /* ProfileVC.swift */,
 				753867DA1F3FE66B003A7BD7 /* PostInfoVC.swift */,
+				7585AE201F425D4D00B7E66F /* ProfilePageVC.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 				753867D01F3005B4003A7BD7 /* CircleView.swift in Sources */,
 				7544AF641F2EB82700126FFF /* CustomView.swift in Sources */,
 				7544AF691F2EBE0500126FFF /* RoundButton.swift in Sources */,
+				7585AE211F425D4D00B7E66F /* ProfilePageVC.swift in Sources */,
 				753867D71F3666F3003A7BD7 /* Post.swift in Sources */,
 				7544AF4F1F2AC46900126FFF /* SignInVC.swift in Sources */,
 				7544AF6B1F2EC3A800126FFF /* CustomField.swift in Sources */,

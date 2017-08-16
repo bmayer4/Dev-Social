@@ -13,12 +13,13 @@ import SwiftKeychainWrapper
 class PostCell: UITableViewCell {
 
     @IBOutlet weak var profileImg: UIImageView!
-    @IBOutlet weak var usernameLbl: UILabel!
     @IBOutlet weak var postImg: UIImageView!
     @IBOutlet weak var caption: UITextView!
     @IBOutlet weak var likesLbl: UILabel!
     @IBOutlet weak var likeImg: UIImageView!
     @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var usernameBtn: UIButton!
+
     
     var post: Post!
     var likesRef: DatabaseReference!
@@ -35,8 +36,7 @@ class PostCell: UITableViewCell {
         likeImg.isUserInteractionEnabled = true //IMPORTANT
         
         editButton.isHidden = true
-        
-    }
+        }
     
     
     //we want to cache images that we bring down from firebase
@@ -63,7 +63,8 @@ class PostCell: UITableViewCell {
             if let _ = snapshot.value as? NSNull {
                 print("no username")
             } else {
-                self.usernameLbl.text = snapshot.value as? String
+                let title = snapshot.value as? String
+                self.usernameBtn.setTitle(title, for: .normal)
             }
         })
         
@@ -132,7 +133,7 @@ class PostCell: UITableViewCell {
     
     func likeTapped(sender: UITapGestureRecognizer) {
         likesRef.observeSingleEvent(of: .value, with: { (snapshot) -> Void in
-
+            print("Post cap from like tapped: \(self.post.caption)")  //wow, it knows every cell
             if let _ = snapshot.value as? NSNull {
                 self.likeImg.image = UIImage(named: "filled-heart")
                 self.post.adjustLikes(addLike: true)
@@ -145,5 +146,6 @@ class PostCell: UITableViewCell {
         })
 
     }
+    
 
 }

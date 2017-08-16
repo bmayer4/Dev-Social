@@ -215,7 +215,23 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                     destination.post = post
                 }
             }
+        } else if segue.identifier == "goToProfilePage" {
+            if let dest = segue.destination as? ProfilePageVC {
+                if let userId = sender as? String {
+                    dest.userId = userId
+                }
+            }
         }
+    }
+
+    @IBAction func usernameTapped(_ sender: Any) {
+        
+        let buttonPosition: CGPoint = (sender as! UIButton).convert(CGPoint.zero, to:self.tableView)
+        let indexPath = self.tableView.indexPathForRow(at: buttonPosition)
+        let post = posts[indexPath!.row]
+        let userId = post.userId
+        
+        performSegue(withIdentifier: "goToProfilePage", sender: userId)
     }
 
     

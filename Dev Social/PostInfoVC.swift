@@ -25,12 +25,11 @@ class PostInfoVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = true
         imagePicker.delegate = self
-        
-        print("Caption: \(post.caption)")
+
         captionField.text = post.caption
         
         getImageFromFirebase()
-        
+
     }
     
     
@@ -125,6 +124,7 @@ class PostInfoVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
 
             
         }
+
         
 }
 
