@@ -10,6 +10,8 @@ import UIKit
 import SwiftKeychainWrapper
 import Firebase
 
+
+
 class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var tableView: UITableView!
@@ -18,6 +20,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     var posts = [Post]()
     var imagePicker: UIImagePickerController!
+
     
     static var imageCache = NSCache<NSString, UIImage>()
     
@@ -219,6 +222,10 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             if let dest = segue.destination as? ProfilePageVC {
                 if let userId = sender as? String {
                     dest.userId = userId
+                    
+                    dest.getUser(userId: userId)  //passing value useing method from dest function..another way 
+                    
+                    
                 }
             }
         }

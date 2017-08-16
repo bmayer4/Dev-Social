@@ -9,7 +9,11 @@
 import UIKit
 import Firebase
 
-class ProfilePageVC: UIViewController {
+
+
+
+
+class ProfilePageVC: UIViewController  {
 
     @IBOutlet weak var nameLbl: UILabel!
     @IBOutlet weak var providerLbl: UILabel!
@@ -23,7 +27,6 @@ class ProfilePageVC: UIViewController {
         print("userId from profile page: \(userId)")
         
         greetUser()
-
     }
 
     @IBAction func backPressed(_ sender: UIButton) {
@@ -50,5 +53,10 @@ class ProfilePageVC: UIViewController {
         })
         }
     
+    func getUser(userId: String) {
+        print("userId via method: \(userId)")
+    }
+    
+
 
 }
