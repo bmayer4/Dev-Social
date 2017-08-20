@@ -17,7 +17,7 @@ class Post {
     private var _postKey: String!  //could have called this id
     private var _postRef: DatabaseReference!
     private var _userId: String!
-    
+    private var _postedDate: String!
     
     var caption: String {
         return _caption
@@ -37,6 +37,10 @@ class Post {
     
     var userId: String {
         return _userId
+    }
+    
+    var postedDate: String {
+        return _postedDate
     }
     
     init(caption: String, imageUrl: String, likes: Int) {
@@ -62,6 +66,10 @@ class Post {
         
         if let userId = postData["userId"] as? String {
             self._userId = userId
+        }
+        
+        if let postedDate = postData["postedDate"] as? String {
+            self._postedDate = postedDate
         }
         
         _postRef = DataService.ds.REF_POSTS.child(_postKey)

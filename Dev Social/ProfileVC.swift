@@ -104,6 +104,7 @@ class ProfileVC: UIViewController, UIImagePickerControllerDelegate, UINavigation
         dismiss(animated: true, completion: nil)
     }
     
+    //not signing out actually if going back to  feed
     @IBAction func signOutTapped(_ sender: Any) {
         print(self.presentingViewController!)
         if self.presentingViewController is FeedVC {

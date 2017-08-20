@@ -36,8 +36,9 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         imagePicker.allowsEditing = true
         imagePicker.delegate = self
         
-        DataService.ds.REF_POSTS.observe(.value, with: { (snapshot) in
-            print("SNAP \(String(describing: snapshot.value))")
+            //you could sort by caption also
+            DataService.ds.REF_POSTS.queryOrdered(byChild: "postedDate").observe(.value, with: { (snapshot) in
+            print("SNAPS \(String(describing: snapshot.value))")
             
             self.posts = []  //so no duplcate posts
      
@@ -53,6 +54,8 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
                     }
                 }
             }
+                self.posts.reverse()  //sorted by earliest date first, but we need to use code to get most recent first
+
             self.tableView.reloadData()
         })
     }
@@ -123,7 +126,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
             let imgUid = NSUUID().uuidString
             let metadata = StorageMetadata()
             metadata.contentType = "image/jpeg"
-            
+        
             DataService.ds.REF_POST_IMAGES.child(imgUid).putData(imgData, metadata: metadata) {
             (metadata, error) in
                 if error != nil {
@@ -148,7 +151,8 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         "caption": captionField.text! as Any,
         "imageUrl": imgUrl as Any,
         "likes": 0 as Any,
-        "userId": KeychainWrapper.standard.string(forKey: KEY_UID) as Any  //stores id of user who made post
+        "userId": KeychainWrapper.standard.string(forKey: KEY_UID) as Any,  //stores id of user who made post,
+        "postedDate": ServerValue.timestamp()     //we want timestamp to be on firebase end
         ]
         
         let firebasePost = DataService.ds.REF_POSTS.childByAutoId()
